@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="container-fluid">
+
+    <div id="addnew" class="modal hide fade in" role="dialog" style="display: none">
+        <div class="modal-header">
+            New Task
+        </div>
+
+        <div class="modal-body">
+            <form>
+                <fieldset>
+                    <legend>Add new task</legend>
+                    <label>Task Description</label>
+                    <input type="text" placeholder="Type here..." />
+                </fieldset>
+            </form>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal">Close</button>
+            <button class="btn btn-primary">Add</button> 
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span4">
+            <button class="btn btn-info" data-bind="click: sort">Sort</button>
+            <table id="tasks" class="table">
+                <tbody data-bind="foreach: tasks">
+                    <tr>
+                        <td data-bind="text: userName"></td>
+                        <td data-bind="text: description"></td>
+                        <td>
+                            <div data-bind="ifnot: isCompleted">
+                                <button class="btn btn-primary" data-bind="click: $root.update">Done</button>
+                            </div>
+                        </td>
+                        <td data-bind="if: isCompleted">
+                            <i class="icon-ok"></i>
+                        </td>
+                        <td>
+                            <button class="btn btn-warning" data-bind="click: $root.delete">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="span8"></div>
+    </div>
+
+    <div class="row">
+        <div class="span2">
+            <form data-bind="submit: post">
+                <fieldset>
+                    <legend>Add new Task</legend>
+                    <input type="text" data-bind="value: taskToAdd, valueUpdate: 'keyUp'" />
+                    <button type="submit" class="btn">Add</button>
+                </fieldset>
+            </form>
+        </div>
+        <div class="span10"></div>
+    </div>
+
+</div>
