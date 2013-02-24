@@ -11,62 +11,49 @@ namespace ToDoSite.DataAccess
     public class TaskRepository : IRepository<ToDoTask>
     {
         public IEnumerable<ToDoTask> SelectAll () {
-            using ( ToDoContext context = new ToDoContext () ) {
-                return context.Tasks.ToList ();
+            using ( ToDoContext context = new ToDoContext() ) {
+                return context.Tasks.ToList();
             }
         } // End SelectAll
 
         public IEnumerable<ToDoTask> Select ( Expression<Func<ToDoTask , bool>> filter ) {
-            using ( ToDoContext context = new ToDoContext () ) {
-                return context.Tasks.Where ( filter ).ToList ();
+            using ( ToDoContext context = new ToDoContext() ) {
+                return context.Tasks.Where( filter ).ToList();
             }
         } // End Select
 
-        public ToDoTask Insert ( ToDoTask entity ) {
-            if ( entity == null )
-                throw new ArgumentException ();
-
-            using ( ToDoContext context = new ToDoContext () ) {
-                context.Tasks.Add ( entity );
-                context.SaveChanges ();
+        public void Insert ( ToDoTask entity ) {
+            using ( ToDoContext context = new ToDoContext() ) {
+                context.Tasks.Add( entity );
+                context.SaveChanges();
             }
-
-            return entity;
         } // End Insert
 
-        public bool Update ( ToDoTask entity ) {
-            if ( entity == null ) {
-                return false;
-            }
-
-            using ( ToDoContext context = new ToDoContext () ) {
-                var task = context.Tasks.SingleOrDefault ( ( item ) => item.Id == entity.Id );
+        public void Update ( ToDoTask entity ) {
+            using ( ToDoContext context = new ToDoContext() ) {
+                var task = context.Tasks.SingleOrDefault( ( item ) => item.Id == entity.Id );
 
                 if ( task == null ) {
-                    return false;
+                    throw new ArgumentException();
                 }
 
-                context.Entry ( task ).CurrentValues.SetValues ( entity );
-                
-                context.SaveChanges ();
-            }
+                context.Entry( task ).CurrentValues.SetValues( entity );
 
-            return true;
+                context.SaveChanges();
+            }
         } // End Update
 
-        public bool Delete ( object id ) {
-            using ( ToDoContext context = new ToDoContext () ) {
-                var task = context.Tasks.SingleOrDefault ( ( item ) => item.Id == ( int ) id );
+        public void Delete ( object id ) {
+            using ( ToDoContext context = new ToDoContext() ) {
+                var task = context.Tasks.SingleOrDefault( ( item ) => item.Id == ( int ) id );
 
                 if ( task == null ) {
-                    return false;
+                    throw new ArgumentException();
                 }
 
-                context.Tasks.Remove ( task );
-                context.SaveChanges ();
+                context.Tasks.Remove( task );
+                context.SaveChanges();
             }
-
-            return true;
         } // End Delete
     }
 }

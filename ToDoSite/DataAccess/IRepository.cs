@@ -9,10 +9,10 @@ namespace ToDoSite.DataAccess
 {
     public interface IRepository<T>
     {
-        IEnumerable<T> SelectAll();
-        IEnumerable<T> Select(Expression<Func<T, bool>> filter);
-        T Insert(T entity);
-        bool Update(T entity);
-        bool Delete(object id);
+        IEnumerable<T> SelectAll ();
+        IEnumerable<T> Select ( Expression<Func<T , bool>> filter );
+        void Insert ( T entity );
+        void Update ( T entity );
+        void Delete ( object id );
     }
 }
