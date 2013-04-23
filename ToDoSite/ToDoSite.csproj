@@ -171,6 +171,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\JsDateConverter.cs" />
     <Compile Include="Models\ToDoContext.cs" />
     <Compile Include="Models\ToDoModelInitializer.cs" />
     <Compile Include="Models\ToDoTask.cs" />

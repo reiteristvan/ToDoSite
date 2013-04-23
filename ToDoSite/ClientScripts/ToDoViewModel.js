@@ -40,7 +40,7 @@ function ToDoViewModel() {
         var task = JSON.stringify({
             id: -1,
             description: self.taskToAdd(),
-            date: Date.now,
+            date: Date.now(),
             isCompleted: false,
             userName: ""
         });

@@ -21,6 +21,7 @@ namespace ToDoSite.Models
         public string Description { get; set; }
 
         [JsonProperty ( "date" )]
+        [JsonConverter(typeof(JsDateConverter))]
         public DateTime Date { get; set; }
 
         [JsonProperty ( "isCompleted" )]

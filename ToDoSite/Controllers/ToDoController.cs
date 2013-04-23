@@ -14,40 +14,64 @@ namespace ToDoSite.Controllers
     [Authorize]
     public class ToDoController : ApiController
     {
-        public IEnumerable<ToDoTask> Get () {
-            return repository.Select(
+        public IEnumerable<ToDoTask> Get () 
+        {
+            return context.Tasks.Where(
                 ( task ) => task.UserName == WebSecurity.CurrentUserName );
-        } // End Get
+        } // Get
 
-        public HttpResponseMessage Post ( ToDoTask task ) {
-            if( task == null ) {
+        public HttpResponseMessage Post ( ToDoTask task ) 
+        {
+            if( task == null ) 
+            {
                 throw new HttpException( 400 , "Task cannot be null" );
             }
 
             task.UserName = WebSecurity.CurrentUserName;
-            repository.Insert( task );
+            //task.Date = DateTime.Now;
+            context.Tasks.Add( task );
+            context.SaveChanges();
 
             return Request.CreateResponse<ToDoTask>( HttpStatusCode.OK , task );
-        } // End Post
+        } // Post
 
         public void Put ( ToDoTask task ) {
-            try {
-                repository.Update( task );
-            } catch ( ArgumentException ) {
+            var original = context.Tasks
+                .SingleOrDefault( ( item ) => item.Id == task.Id );
+
+            if ( original == null )
+            {
                 throw new HttpException( 404, "The database doesn't contains this item" );
             }
-        } // End Put
+
+            context.Entry( original ).CurrentValues.SetValues( task );
+            context.SaveChanges();
+        } // Put
 
         public void Delete ( int id ) {
-            try {
-                repository.Delete( id );
-            } catch ( ArgumentException ) {
-                throw new HttpException( 404 , "The database doesn't contains this item" );
+            var task = context.Tasks
+                .SingleOrDefault( ( item ) => item.Id == ( int ) id );
+
+            if (task == null)
+            {
+                throw new HttpException(404, "The database doesn't contains this item");
             }
-        } // End Delete
+
+            context.Tasks.Remove( task );
+            context.SaveChanges();
+        } // Delete
 
         // Fields
 
-        static public TaskRepository repository = new TaskRepository();
+        private ToDoContext context = new ToDoContext();
+
+        // Dispose
+
+        protected override void Dispose(bool disposing)
+        {
+            context.Dispose();
+
+            base.Dispose(disposing);
+        } // Dispose
     }
 }
